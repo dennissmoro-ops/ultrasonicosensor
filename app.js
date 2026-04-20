@@ -1,0 +1,1 @@
+document.getElementById('contenido').textContent = "Este es un mensaje dinámico desde JavaScript.";

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sensor Ultrasonico ESP32</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #020617; /* más oscuro */
+      color: #e2e8f0; /* blanco menos brillante */
+    }
+
+    h1 {
+      margin-top: 40px;
+      color: #0ea5e9; /* azul más sobrio */
+    }
+
+    .card {
+      margin: 40px auto;
+      padding: 20px;
+      background: #0f172a; /* más oscuro que antes */
+      border-radius: 12px;
+      width: 250px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.6); /* profundidad */
+    }
+
+    .valor {
+      font-size: 40px;
+      margin-top: 10px;
+      color: #f8fafc; /* valor más destacado */
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <h1>Distancia del Sensor</h1>
+
+  <div class="card">
+    <p>Distancia actual:</p>
+    <div id="distancia" class="valor">-- cm</div>
+  </div>
+
+  <script>
+    const TOKEN = "c7318f7d-0ef9-42e7-8d88-921eccc8a9c1";
+
+    async function obtenerDatos() {
+      try {
+        const response = await fetch("https://api.tago.io/data?variable=distancia&query=last_value", {
+          headers: {
+            "Device-Token": TOKEN
+          }
+        });
+
+        const data = await response.json();
+
+        if (data.result.length > 0) {
+          document.getElementById("distancia").innerText =
+            data.result[0].value + " cm";
+        }
+
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    }
+
+    setInterval(obtenerDatos, 3000);
+    obtenerDatos();
+  </script>
+
+</body>
+</html>
